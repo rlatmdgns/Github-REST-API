@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { BoardGroup, BoardItem, Boardcontent, CommentCount, Title } from "./styles";
+import moment from "moment";
+import { Link } from "react-router-dom";
 const BoardList = () => {
   const config = {
     method: "get",
@@ -15,7 +18,6 @@ const BoardList = () => {
   const getData = async () => {
     try {
       const response = await axios(config);
-      console.log(response);
       setIssues(response.data);
     } catch (error) {
       console.log(error);
@@ -25,22 +27,34 @@ const BoardList = () => {
     getData();
   }, []);
   return (
-    <ul>
-      {issues.map((issue) => {
+    <BoardGroup>
+      {issues.map((issue, index) => {
+        if (index === 4) {
+          return (
+            <BoardItem key={index}>
+              <a href="https://thingsflow.com/ko/home">
+                <img src="https://placehold.it/500x100?text=ad" />
+              </a>
+            </BoardItem>
+          );
+        }
         return (
-          <li key={issue.id}>
-            <div>
-              #{issue.number}
-              {issue.title}
-              {issue.created_at}
-              {issue.user.login}
-              이슈번호, 이슈제목, 작성자, 작성일, 코멘트수
-              {issue.comments}
-            </div>
-          </li>
+          <BoardItem key={issue.id}>
+            <Link to={`/${issue.id}`}>
+              <Boardcontent>
+                <div>
+                  #{issue.number}
+                  <Title>{issue.title}</Title>
+                  <span>{issue.user.login}</span>
+                  <span>{moment(issue.created_at).format("YYYY-MM-DD")}</span>
+                </div>
+                <CommentCount>코멘트 수 {issue.comments}</CommentCount>
+              </Boardcontent>
+            </Link>
+          </BoardItem>
         );
       })}
-    </ul>
+    </BoardGroup>
   );
 };
 
