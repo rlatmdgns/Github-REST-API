@@ -14,7 +14,6 @@ const BoardList = () => {
   };
 
   const [issues, setIssues] = useState([]);
-  console.log(issues);
   const getData = async () => {
     try {
       const response = await axios(config);
