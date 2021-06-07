@@ -4,6 +4,8 @@ import { BoardGroup, BoardItem, Boardcontent, CommentCount, Title } from "./styl
 import moment from "moment";
 import { Link } from "react-router-dom";
 const BoardList = () => {
+  const [issues, setIssues] = useState([]);
+  
   const config = {
     method: "get",
     url: "https://api.github.com/repos/angular/angular-cli/issues?sort=comments",
@@ -12,8 +14,6 @@ const BoardList = () => {
       Authorization: "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",
     },
   };
-
-  const [issues, setIssues] = useState([]);
   const getData = async () => {
     try {
       const response = await axios(config);
